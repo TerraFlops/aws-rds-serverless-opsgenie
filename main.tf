@@ -1,11 +1,11 @@
 # Convert integration name into snake case
 locals {
-  db_instance_identifier = join("", [for element in split("-", lower(var.db_instance_identifier)) : title(element)])
+  db_cluster_identifier = join("", [for element in split("-", lower(var.db_cluster_identifier)) : title(element)])
   opsgenie_responding_teams = setunion(var.opsgenie_responding_teams, toset([var.opsgenie_owner_team]))
 
   # Create alarm name based on the trigger condition (hopefully prevent duplicates)
   # (e.g. PaymentGatewayAverageApproximateNumberOfMessagesVisibleGreaterThanOrEqualToThreshold10000In5Periods)
-  alarm_name = var.alarm_name == null ? "${local.db_instance_identifier}Rds${var.statistic}${var.metric_name}${var.comparison}${var.threshold}In${var.evaluation_periods}PeriodsOf${var.period}" : var.alarm_name
+  alarm_name = var.alarm_name == null ? "${local.db_cluster_identifier}Rds${var.statistic}${var.metric_name}${var.comparison}${var.threshold}In${var.evaluation_periods}PeriodsOf${var.period}" : var.alarm_name
 }
 
 # Retrieve the requested Opsgenie users
